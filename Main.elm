@@ -6,17 +6,18 @@ import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
 import Debug
+import String exposing (..)
 
 type alias Model =
-  { checked: Bool }
+  { checked: String }
 
 type Action
   = NoOp
-  | Rerender Bool
+  | Rerender String
 
 initialModel : Model
 initialModel =
-  { checked = True }
+  { checked = "foobar" }
 
 update action model =
   case action of
@@ -49,7 +50,7 @@ init =
 view actionDispatcher model =
   let
     forcedCheckedValue =
-      True
+      "foobar"
 
     _ =
       Debug.log "rerendering with the following model:" (model)
@@ -58,12 +59,12 @@ view actionDispatcher model =
       Debug.log "checked values should be" (forcedCheckedValue)
   in
     input
-      [ type' "checkbox"
-      , checked forcedCheckedValue
+      [ type' "text"
+      , value forcedCheckedValue
       , onWithOptions
           "change"
           defaultOptions
-          targetChecked
+          targetValue
           (\bool -> Signal.message actionDispatcher (Rerender bool))
       ]
       []
